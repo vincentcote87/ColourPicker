@@ -1,6 +1,8 @@
 let loop;
 
-$(document).on('mousedown', function(e) {
+updateColourCode();
+
+$('.pallete').on('mousedown', function(e) {
   loop = setInterval(function() {
     let c = getCurrentColor();
     switch (e.target.id) {
@@ -13,12 +15,15 @@ $(document).on('mousedown', function(e) {
       case 'blue':
       setNewColor(c.red, c.green, (c.blue + 5)% 255);
       break;
+      case 'resetBtn':
+      setNewColor(0,0,0); console.log("YASDF"); break;
     }
+    updateColourCode();
   }, 100);
   return false;
 });
 
-$(document).on('mouseup', function() {
+$('.pallete').on('mouseup', function() {
   clearInterval(loop);
   return false;
 })
@@ -26,8 +31,23 @@ $(document).on('mouseup', function() {
 $(document).on('click', function(e) {
   if (e.target.id == 'savedColors') {
     saveColor();
+  } else if (e.target.className == "delBtn") {
+    e.target.parentNode.remove();
   }
+  console.log(e.target);
 });
+
+$(document).on('keypress', function(e) {
+  let c = getCurrentColor();
+  console.log(e.charCode);
+  switch (e.charCode) {
+    case 114: setNewColor((c.red + 1) % 255, c.green, c.blue); break;
+    case 103: setNewColor(c.red, (c.green + 1) % 255, c.blue); break;
+    case 98: setNewColor(c.red, c.green, (c.blue + 1) % 255); break;
+    case 0: saveColor(); break;
+  }
+  updateColourCode();
+})
 
 function getCurrentColor() {
   let color = $('.wrap').css('background-color').replace('rgb(', '').replace(')', '').split(',');
@@ -35,7 +55,6 @@ function getCurrentColor() {
 }
 
 function setNewColor(r, g, b) {
-  console.log(r);
   $('.wrap').css('background-color', "rgb(" + r + ", " + g + ", " + b + ")");
 }
 
@@ -43,11 +62,44 @@ function saveColor() {
   let savedColor = document.createElement('div');
   savedColor.className = 'background';
   savedColor.style.backgroundColor = $('.wrap').css('background-color');
-  let colorCode = document.createElement('span');
-  colorCode.innerText = "#443ca43";
+  let delBtn = document.createElement('h3');
+  delBtn.innerHTML = ' 	&#128465';
+  delBtn.className = 'delBtn';
+  delBtn.style.color = $('.wrap').css('background-color');
+  let colorCode = document.createElement('h1');
+  colorCode.innerText = getColourCode();
   colorCode.style.color = $('.wrap').css('background-color');
-  colorCode.style.filter = "invert(100%)";
+  colorCode.className = 'colourCode';
   savedColor.appendChild(colorCode);
+  savedColor.appendChild(delBtn);
   document.getElementById('savedColors').appendChild(savedColor);
+
+  $('#alertAdded').fadeIn(500);
+  setTimeout(function () {
+    $('#alertAdded').fadeOut(500);
+  }, 1000);
 }
 
+function updateColourCode() {
+  let c = getCurrentColor();
+  $('#red').text(c.red);
+  $('#green').text(c.green);
+  $('#blue').text(c.blue);
+}
+
+function getColourCode() {
+  let c = getCurrentColor();
+  let str = "#";
+
+  for (let rgb of [
+      c.red.toString(16),
+      c.green.toString(16),
+      c.blue.toString(16),
+    ]) {
+    if (rgb.length == 1)
+      str += "0" + rgb;
+    else
+      str += rgb;
+  }
+  return str;
+}

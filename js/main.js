@@ -29,15 +29,19 @@ $('.pallete').on('mouseup', function() {
 })
 
 $(document).on('click', function(e) {
+  $('#help').fadeOut(500);
   if (e.target.id == 'savedColors') {
     saveColor();
   } else if (e.target.className == "delBtn") {
     e.target.parentNode.remove();
+  } else if (e.target.id == "helpBtn") {
+    console.log("ASD");
+    $('#help').fadeIn(500);
   }
-  console.log(e.target);
 });
 
 $(document).on('keypress', function(e) {
+  $('#help').fadeOut(500);
   let c = getCurrentColor();
   console.log(e.charCode);
   switch (e.charCode) {

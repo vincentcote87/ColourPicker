@@ -15,8 +15,8 @@ $('.pallete').on('mousedown', function(e) {
       case 'blue':
       setNewColor(c.red, c.green, (c.blue + 5)% 255);
       break;
-      case 'resetBtn':
-      setNewColor(0,0,0); console.log("YASDF"); break;
+      // case 'resetBtn':
+      // setNewColor(0,0,0); break;
     }
     updateColourCode();
   }, 100);
@@ -35,8 +35,10 @@ $(document).on('click', function(e) {
   } else if (e.target.className == "delBtn") {
     e.target.parentNode.remove();
   } else if (e.target.id == "helpBtn") {
-    console.log("ASD");
     $('#help').fadeIn(500);
+  } else if (e.target.id == 'resetBtn') {
+    setNewColor(0, 0, 0);
+    updateColourCode();
   }
 });
 

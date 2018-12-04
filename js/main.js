@@ -15,8 +15,6 @@ $('.pallete').on('mousedown', function(e) {
       case 'blue':
       setNewColor(c.red, c.green, (c.blue + 5)% 255);
       break;
-      // case 'resetBtn':
-      // setNewColor(0,0,0); break;
     }
     updateColourCode();
   }, 100);

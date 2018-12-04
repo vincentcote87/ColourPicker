@@ -112,7 +112,6 @@
  }
 
  li {
-   /* display: inline; */
    margin: 20px;
  }
 
@@ -166,3 +165,4 @@
      grid-column: 1;
    }
  }
+ 
